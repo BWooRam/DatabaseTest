@@ -78,6 +78,12 @@ abstract class MyDatabase : RoomDatabase() {
     }
 }
 
+/**
+ * 자동 autoMigrations 관련 테스트 진행
+ * # 요구 사항
+ * - build gradle에 스키마 관련 코드 필요
+ * - app > schemas에 각 version에 관련된 schema가 정의 필요
+ */
 @Database(
     entities = [
         ExampleEntity::class,
