@@ -161,25 +161,25 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
 
-    private fun createRandomEntity(): ExampleEntity {
-        val randomId = Random.nextInt(0, 10000)
-        val randomString = randomId.toString()
-        return ExampleEntity(id = randomId, randomString)
-    }
+fun createRandomEntity(): ExampleEntity {
+    val randomId = Random.nextInt(0, 10000)
+    val randomString = randomId.toString()
+    return ExampleEntity(id = randomId, randomString)
+}
 
-    private fun createRandomUser(): UserEntity {
-        val randomId = Random.nextInt(0, 10000)
-        val randomString = randomId.toString()
-        val randomAge = Random.nextInt(0, 99)
-        val randomGender = Random.nextBoolean()
-        return UserEntity(
-            id = randomId,
-            name = randomString,
-            age = randomAge,
-            gender = randomGender
-        )
-    }
+fun createRandomUser(): UserEntity {
+    val randomId = Random.nextInt(0, 10000)
+    val randomString = randomId.toString()
+    val randomAge = Random.nextInt(0, 99)
+    val randomGender = Random.nextBoolean()
+    return UserEntity(
+        id = randomId,
+        name = randomString,
+        age = randomAge,
+        gender = randomGender
+    )
 }
 
 @Composable
