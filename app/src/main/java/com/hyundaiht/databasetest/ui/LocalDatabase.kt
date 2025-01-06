@@ -60,6 +60,7 @@ interface UserDao {
 
 /**
  * 수동 이전 테스트 : addMigrations
+ * # 요구 사항 : 없음
  */
 @Database(
     entities = [
