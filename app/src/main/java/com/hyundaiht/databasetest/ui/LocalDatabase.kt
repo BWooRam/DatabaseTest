@@ -57,6 +57,10 @@ interface UserDao {
     suspend fun allList(): List<UserEntity>
 }*/
 
+/**
+ * 수동 이전 테스트 : addMigrations
+ *
+ */
 @Database(entities = [ExampleEntity::class], version = 1)
 abstract class MyDatabase : RoomDatabase() {
     abstract fun exampleDao(): ExampleDao
@@ -71,6 +75,7 @@ abstract class MyDatabase : RoomDatabase() {
 //                    .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
 //                    .enableMultiInstanceInvalidation()
 //                    .fallbackToDestructiveMigration()
+                    .addMigrations()
                     .build()
                 instance
             }
@@ -79,7 +84,7 @@ abstract class MyDatabase : RoomDatabase() {
 }
 
 /**
- * 자동 autoMigrations 관련 테스트 진행
+ * 자동 이전 테스트 : autoMigrations
  * # 요구 사항
  * - build gradle에 스키마 관련 코드 필요
  * - app > schemas에 각 version에 관련된 schema가 정의 필요
