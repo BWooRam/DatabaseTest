@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "ca653f9d8f13788f31905ba06a977567",
+    "version": 4,
+    "identityHash": "4143010477cc48e81b7051b9a7c262d9",
     "entities": [
       {
         "tableName": "example_table",
@@ -37,7 +37,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "user2",
+        "tableName": "user",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `age` INTEGER NOT NULL, `gender` INTEGER NOT NULL)",
         "fields": [
           {
@@ -78,7 +78,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ca653f9d8f13788f31905ba06a977567')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4143010477cc48e81b7051b9a7c262d9')"
     ]
   }
 }

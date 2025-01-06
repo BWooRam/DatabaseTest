@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import com.hyundaiht.databasetest.ui.ExampleEntity
 import com.hyundaiht.databasetest.ui.MyDatabase
 import com.hyundaiht.databasetest.ui.NewMyDatabase
+import com.hyundaiht.databasetest.ui.UserEntity
 import com.hyundaiht.databasetest.ui.theme.DataBaseTestTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -85,7 +86,36 @@ class MainActivity : ComponentActivity() {
                         )
 
                         TitleAndButton(
-                            title = "DB 데이터 이전 테스트",
+                            title = "DB 데이터 수동 이전 테스트",
+                            titleModifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            buttonName = "DB 이전 실행",
+                            buttonModifier = Modifier
+                                .wrapContentSize(),
+                            clickEvent = {
+                                val db = MyDatabase.getInstance(this@MainActivity)
+                                Log.d(tag, "DB 수동 이전 결과 db = $db")
+                                CoroutineScope(Dispatchers.Default).launch {
+                                    runCatching {
+//                                        db.exampleDao().insert(createRandomEntity())
+//                                        db.exampleDao().insert(createRandomEntity())
+//                                        db.exampleDao().insert(createRandomEntity())
+//                                        db.userDao().insert(createRandomUser())
+//                                        db.userDao().insert(createRandomUser())
+//                                        db.userDao().insert(createRandomUser())
+                                        db.exampleDao().allList()
+                                    }.onSuccess {
+                                        Log.d(tag, "DB 데이터 이전 테스트 onSuccess data = $it")
+                                    }.onFailure {
+                                        Log.d(tag, "DB 데이터 이전 테스트 onFailure error = $it")
+                                    }
+                                }
+                            }
+                        )
+
+                        TitleAndButton(
+                            title = "DB 데이터 자동 이전 테스트",
                             titleModifier = Modifier
                                 .fillMaxWidth()
                                 .wrapContentHeight(),
@@ -94,7 +124,7 @@ class MainActivity : ComponentActivity() {
                                 .wrapContentSize(),
                             clickEvent = {
                                 val db = NewMyDatabase.getInstance(this@MainActivity)
-                                Log.d(tag, "DB 이전 결과 db = $db")
+                                Log.d(tag, "DB 자동 이전 결과 db = $db")
                                 CoroutineScope(Dispatchers.Default).launch {
                                     runCatching {
 //                                        db.exampleDao().insert(createRandomEntity())
@@ -138,7 +168,7 @@ class MainActivity : ComponentActivity() {
         return ExampleEntity(id = randomId, randomString)
     }
 
-    /*private fun createRandomUser(): UserEntity {
+    private fun createRandomUser(): UserEntity {
         val randomId = Random.nextInt(0, 10000)
         val randomString = randomId.toString()
         val randomAge = Random.nextInt(0, 99)
@@ -149,7 +179,7 @@ class MainActivity : ComponentActivity() {
             age = randomAge,
             gender = randomGender
         )
-    }*/
+    }
 }
 
 @Composable

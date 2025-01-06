@@ -17,6 +17,7 @@ import androidx.room.RenameTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.AutoMigrationSpec
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import java.io.File
 import java.io.FileNotFoundException
@@ -28,13 +29,13 @@ data class ExampleEntity(
     val createdAt: Long = System.currentTimeMillis() // 생성 시간 기록
 )
 
-/*@Entity(tableName = "user2")
+@Entity(tableName = "user")
 data class UserEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val age: Int,
     val gender: Boolean
-)*/
+)
 
 @Dao
 interface ExampleDao {
@@ -48,34 +49,52 @@ interface ExampleDao {
     suspend fun allList(): List<ExampleEntity>
 }
 
-/*@Dao
+@Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user1Entity: UserEntity)
 
-    @Query("SELECT * FROM user2")
+    @Query("SELECT * FROM user")
     suspend fun allList(): List<UserEntity>
-}*/
+}
 
 /**
  * 수동 이전 테스트 : addMigrations
- *
  */
-@Database(entities = [ExampleEntity::class], version = 1)
+@Database(
+    entities = [
+        ExampleEntity::class,
+        UserEntity::class,
+    ],
+    version = 4
+)
 abstract class MyDatabase : RoomDatabase() {
     abstract fun exampleDao(): ExampleDao
+    abstract fun userDao(): UserDao
 
     companion object {
         fun getInstance(context: Context): MyDatabase {
             return synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext, MyDatabase::class.java, "example_database.db"
+                    context.applicationContext, MyDatabase::class.java, "my_database.db"
                 )
 //                    .createFromFile(getDBfile(context, "example_database.db"))
 //                    .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
 //                    .enableMultiInstanceInvalidation()
 //                    .fallbackToDestructiveMigration()
-                    .addMigrations()
+                    .addMigrations(Migration(1, 2) { db ->
+                        db.execSQL("ALTER TABLE user2 ADD COLUMN `middleName` TEXT")
+                    }).addMigrations(Migration(2, 3) { db ->
+                        //DROP Column이 존재하지 않아서 이런 식으로 진행해야합니다.
+                        db.execSQL("CREATE TABLE user_new(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT NOT NULL, age INTEGER NOT NULL, gender INTEGER NOT NULL)")
+                        db.execSQL("INSERT INTO user_new(id, name, age, gender) SELECT id, name, age, gender FROM user2")
+                        db.execSQL("DROP TABLE user2")
+                        db.execSQL("ALTER TABLE user_new RENAME TO user2")
+                    }).addMigrations(Migration(3, 4) { db ->
+                        db.execSQL("ALTER TABLE user2 RENAME TO user")
+                    })/*.addMigrations(Migration(4, 5) { db ->
+
+                    })*/
                     .build()
                 instance
             }
