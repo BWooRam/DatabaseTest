@@ -2,9 +2,11 @@ package com.hyundaiht.databasetest.ui
 
 import android.content.Context
 import android.util.Log
+import androidx.paging.PagingSource
 import androidx.room.AutoMigration
 import androidx.room.Dao
 import androidx.room.Database
+import androidx.room.Delete
 import androidx.room.DeleteColumn
 import androidx.room.DeleteTable
 import androidx.room.Entity
@@ -54,8 +56,20 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user1Entity: UserEntity)
 
-    @Query("SELECT * FROM user")
+    @Query("DELETE FROM user")
+    suspend fun deleteAllList()
+
+    @Query("SELECT COUNT(*) FROM user")
+    suspend fun getItemCount(): Int
+
+    @Query("SELECT * FROM user ORDER BY id ASC")
     suspend fun allList(): List<UserEntity>
+
+    @Query("SELECT * FROM user ORDER BY id ASC LIMIT :limit OFFSET :offset")
+    suspend fun allList(limit: Int, offset: Int): List<UserEntity>
+
+    @Query("SELECT * FROM user")
+    fun pagingSource(): PagingSource<Int, UserEntity>
 }
 
 /**
