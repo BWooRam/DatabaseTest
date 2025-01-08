@@ -4,12 +4,13 @@ import android.content.Context
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.room.AutoMigration
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
-import androidx.room.Delete
 import androidx.room.DeleteColumn
 import androidx.room.DeleteTable
 import androidx.room.Entity
+import androidx.room.Fts4
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
@@ -37,6 +38,15 @@ data class UserEntity(
     val name: String,
     val age: Int,
     val gender: Boolean
+)
+
+@Fts4
+@Entity(tableName = "push")
+data class PushEntity(
+    @ColumnInfo(name = "uuid") val uuid: Int,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "age") val age: Int,
+    @ColumnInfo(name = "gender") val gender: Boolean
 )
 
 @Dao
@@ -72,6 +82,33 @@ interface UserDao {
     fun pagingSource(): PagingSource<Int, UserEntity>
 }
 
+@Dao
+interface PushDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(pushEntity: PushEntity)
+
+    @Query("DELETE FROM push")
+    suspend fun deleteAllList()
+
+    @Query("SELECT COUNT(*) FROM push")
+    suspend fun getItemCount(): Int
+
+    @Query("SELECT * FROM push ORDER BY uuid ASC")
+    suspend fun allList(): List<PushEntity>
+
+    @Query("SELECT * FROM push ORDER BY uuid ASC LIMIT :limit OFFSET :offset")
+    suspend fun allList(limit: Int, offset: Int): List<PushEntity>
+
+    @Query("SELECT * FROM push")
+    fun pagingSource(): PagingSource<Int, PushEntity>
+
+    @Query("SELECT * FROM push WHERE name LIKE '%' || :name ||'%'")
+    fun searchUsersPush(name: String): List<PushEntity>
+
+    @Query("SELECT * FROM push WHERE name MATCH :name")
+    fun getMatchUsersPush(name: String): List<PushEntity>
+}
+
 /**
  * 수동 이전 테스트 : addMigrations
  * # 요구 사항 : 없음
@@ -80,12 +117,14 @@ interface UserDao {
     entities = [
         ExampleEntity::class,
         UserEntity::class,
+        PushEntity::class,
     ],
     version = 4
 )
 abstract class MyDatabase : RoomDatabase() {
     abstract fun exampleDao(): ExampleDao
     abstract fun userDao(): UserDao
+    abstract fun pushDao(): PushDao
 
     companion object {
         fun getInstance(context: Context): MyDatabase {

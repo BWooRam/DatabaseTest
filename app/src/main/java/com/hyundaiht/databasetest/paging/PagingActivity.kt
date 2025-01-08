@@ -16,13 +16,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.hyundaiht.databasetest.createRandomUser
 import com.hyundaiht.databasetest.ui.MyDatabase
 import com.hyundaiht.databasetest.ui.UserEntity
 import com.hyundaiht.databasetest.ui.theme.DataBaseTestTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class PagingActivity : ComponentActivity() {
     private val tag = javaClass.simpleName

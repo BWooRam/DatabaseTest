@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.hyundaiht.databasetest.ui.ExampleEntity
 import com.hyundaiht.databasetest.ui.MyDatabase
 import com.hyundaiht.databasetest.ui.NewMyDatabase
+import com.hyundaiht.databasetest.ui.PushEntity
 import com.hyundaiht.databasetest.ui.UserEntity
 import com.hyundaiht.databasetest.ui.theme.DataBaseTestTheme
 import kotlinx.coroutines.CoroutineScope
@@ -178,6 +179,19 @@ fun createRandomUser(): UserEntity {
     val randomGender = Random.nextBoolean()
     return UserEntity(
         id = randomId,
+        name = randomString,
+        age = randomAge,
+        gender = randomGender
+    )
+}
+
+fun createRandomPush(): PushEntity {
+    val randomId = Random.nextInt(0, 10000)
+    val randomString = randomId.toString()
+    val randomAge = Random.nextInt(0, 99)
+    val randomGender = Random.nextBoolean()
+    return PushEntity(
+        uuid = randomId,
         name = randomString,
         age = randomAge,
         gender = randomGender
