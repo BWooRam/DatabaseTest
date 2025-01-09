@@ -1,5 +1,6 @@
 package com.hyundaiht.databasetest.push
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,6 +33,7 @@ class PushActivity : ComponentActivity() {
     private val tag = javaClass.simpleName
     private lateinit var viewModel: PushViewModel
     private lateinit var db: MyDatabase
+    private val ioCoroutineScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +81,7 @@ class PushActivity : ComponentActivity() {
     fun PushScreen(query: String) {
         val userPagingData = remember { mutableStateOf<List<PushEntity>?>(null) }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        ioCoroutineScope.launch {
             if(query.isEmpty())
                 return@launch
 
