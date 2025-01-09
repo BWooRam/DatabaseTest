@@ -77,10 +77,10 @@ class PushActivity : ComponentActivity() {
         }
     }
 
+    @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     fun PushScreen(query: String) {
         val userPagingData = remember { mutableStateOf<List<PushEntity>?>(null) }
-
         ioCoroutineScope.launch {
             if(query.isEmpty())
                 return@launch
