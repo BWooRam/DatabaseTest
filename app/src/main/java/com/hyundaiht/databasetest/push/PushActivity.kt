@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.hyundaiht.databasetest.createRandomPush
 import com.hyundaiht.databasetest.ui.MyDatabase
 import com.hyundaiht.databasetest.ui.PushEntity
 import com.hyundaiht.databasetest.ui.theme.DataBaseTestTheme
@@ -40,10 +41,10 @@ class PushActivity : ComponentActivity() {
         // ViewModelProvider.Factory 사용하여 ViewModel 주입
         db = MyDatabase.getInstance(this@PushActivity)
 
-        /*CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             for(index in 0 until 100)
             db.pushDao().insert(createRandomPush())
-        }*/
+        }
 
         val viewModelFactory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {

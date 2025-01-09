@@ -11,6 +11,7 @@ import androidx.room.DeleteColumn
 import androidx.room.DeleteTable
 import androidx.room.Entity
 import androidx.room.Fts4
+import androidx.room.Index
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
@@ -32,7 +33,10 @@ data class ExampleEntity(
     val createdAt: Long = System.currentTimeMillis() // 생성 시간 기록
 )
 
-@Entity(tableName = "user")
+@Entity(
+    tableName = "user",
+    indices = [Index(value = ["id", "name"])]
+)
 data class UserEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
@@ -102,7 +106,7 @@ interface PushDao {
     @Query("SELECT * FROM push")
     fun pagingSource(): PagingSource<Int, PushEntity>
 
-    @Query("SELECT * FROM push WHERE name LIKE '%' || :name ||'%'")
+    @Query("SELECT * FROM push WHERE name MATCH :name||'*'")
     fun searchUsersPush(name: String): List<PushEntity>
 
     @Query("SELECT * FROM push WHERE name MATCH :name")
