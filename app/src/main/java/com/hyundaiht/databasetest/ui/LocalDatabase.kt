@@ -35,7 +35,7 @@ data class ExampleEntity(
 
 @Entity(
     tableName = "user",
-    indices = [Index(value = ["id", "name"])]
+    indices = [Index(value = ["id"])]
 )
 data class UserEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
@@ -84,6 +84,12 @@ interface UserDao {
 
     @Query("SELECT * FROM user")
     fun pagingSource(): PagingSource<Int, UserEntity>
+
+    @Query("SELECT * FROM user WHERE name = :name")
+    fun searchUsersName(name: String): List<UserEntity>
+
+    @Query("SELECT * FROM user WHERE id = :id")
+    fun searchUsersId(id: String): List<UserEntity>
 }
 
 @Dao
@@ -107,10 +113,10 @@ interface PushDao {
     fun pagingSource(): PagingSource<Int, PushEntity>
 
     @Query("SELECT * FROM push WHERE name MATCH :name||'*'")
-    fun searchUsersPush(name: String): List<PushEntity>
+    fun searchPush(name: String): List<PushEntity>
 
     @Query("SELECT * FROM push WHERE name MATCH :name")
-    fun getMatchUsersPush(name: String): List<PushEntity>
+    fun getMatchPush(name: String): List<PushEntity>
 }
 
 /**

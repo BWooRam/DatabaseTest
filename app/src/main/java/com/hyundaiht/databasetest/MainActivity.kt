@@ -173,7 +173,7 @@ fun createRandomEntity(): ExampleEntity {
 }
 
 fun createRandomUser(): UserEntity {
-    val randomId = Random.nextInt(0, 10000)
+    val randomId = Random.nextInt(0, 10000000)
     val randomString = randomId.toString()
     val randomAge = Random.nextInt(0, 99)
     val randomGender = Random.nextBoolean()
