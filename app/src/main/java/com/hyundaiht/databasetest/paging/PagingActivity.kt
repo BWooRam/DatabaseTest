@@ -41,7 +41,7 @@ class PagingActivity : ComponentActivity() {
 
         val viewModelFactory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return PagingViewModel(db.userDao()) as T
+                return PagingViewModel(db) as T
             }
         }
 
@@ -105,7 +105,7 @@ class PagingActivity : ComponentActivity() {
 
     @Composable
     fun UserScreen(viewModel: PagingViewModel) {
-        val userPagingData = viewModel.customUserPagingData.collectAsLazyPagingItems()
+        val userPagingData = viewModel.userPagingData.collectAsLazyPagingItems()
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(userPagingData.itemCount) { index ->
@@ -117,19 +117,14 @@ class PagingActivity : ComponentActivity() {
 
             // 로딩 상태 처리
             userPagingData.apply {
-                when {
-                    loadState.refresh is LoadState.Loading -> {
-                        item { Text("Loading...") }
-                    }
-
-                    loadState.append is LoadState.Loading -> {
-                        item { Text("Loading more...") }
-                    }
-
-                    loadState.append is LoadState.Error -> {
-                        item { Text("Error loading more items") }
-                    }
-                }
+                Log.d(tag, "userPagingData mediator refresh = ${loadState.mediator?.refresh}")
+                Log.d(tag, "userPagingData mediator prepend = ${loadState.mediator?.prepend}")
+                Log.d(tag, "userPagingData mediator append = ${loadState.mediator?.append}")
+                Log.d(tag, "userPagingData mediator hasError = ${loadState.mediator?.hasError}")
+                Log.d(tag, "userPagingData source refresh = ${loadState.source.refresh}")
+                Log.d(tag, "userPagingData source append = ${loadState.source.append}")
+                Log.d(tag, "userPagingData source prepend = ${loadState.source.prepend}")
+                Log.d(tag, "userPagingData source hasError = ${loadState.source.hasError}")
             }
         }
     }

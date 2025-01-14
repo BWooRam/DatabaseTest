@@ -70,11 +70,17 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user1Entity: UserEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(users: List<UserEntity>)
+
     @Query("DELETE FROM user")
     suspend fun deleteAllList()
 
     @Query("SELECT COUNT(*) FROM user")
     suspend fun getItemCount(): Int
+
+    @Query("SELECT COUNT(*) FROM user LIMIT :limit OFFSET :offset")
+    suspend fun getItemCount(limit: Int, offset: Int): Int
 
     @Query("SELECT * FROM user ORDER BY id ASC")
     suspend fun allList(): List<UserEntity>
