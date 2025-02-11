@@ -68,10 +68,10 @@ interface ExampleDao {
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user1Entity: UserEntity)
+    fun insert(user1Entity: UserEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(users: List<UserEntity>)
+    fun insertAll(users: List<UserEntity>)
 
     @Query("DELETE FROM user")
     suspend fun deleteAllList()
@@ -212,9 +212,9 @@ abstract class NewMyDatabase : RoomDatabase() {
     }
 }
 
-private fun getDBfile(context: Context, dbName: String): File {
+fun getDBfile(context: Context, dbName: String): File {
 //            val dbFile = context.getDatabasePath(dbName)
-    val dbFile = File("/data/data/com.hyundaiht.databasetest/files", dbName).apply {
+    val dbFile = File(context.filesDir.absolutePath, dbName).apply {
         setReadable(true)
         setWritable(true)
     }
@@ -223,6 +223,7 @@ private fun getDBfile(context: Context, dbName: String): File {
     }
     Log.d("MyDatabase", "getDBfile file = $dbFile")
     return dbFile
+
 }
 
 
