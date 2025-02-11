@@ -34,7 +34,7 @@ data class ExampleEntity(
 )
 
 @Entity(
-    tableName = "user",
+    tableName = "userEntity",
     indices = [Index(value = ["id"])]
 )
 data class UserEntity(
@@ -45,7 +45,7 @@ data class UserEntity(
 )
 
 @Fts4
-@Entity(tableName = "push")
+@Entity(tableName = "pushEntity")
 data class PushEntity(
     @ColumnInfo(name = "uuid") val uuid: Int,
     @ColumnInfo(name = "name") val name: String,
@@ -73,28 +73,28 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(users: List<UserEntity>)
 
-    @Query("DELETE FROM user")
+    @Query("DELETE FROM userEntity")
     suspend fun deleteAllList()
 
-    @Query("SELECT COUNT(*) FROM user")
+    @Query("SELECT COUNT(*) FROM userEntity")
     suspend fun getItemCount(): Int
 
-    @Query("SELECT COUNT(*) FROM user LIMIT :limit OFFSET :offset")
+    @Query("SELECT COUNT(*) FROM userEntity LIMIT :limit OFFSET :offset")
     suspend fun getItemCount(limit: Int, offset: Int): Int
 
-    @Query("SELECT * FROM user ORDER BY id ASC")
+    @Query("SELECT * FROM userEntity ORDER BY id ASC")
     suspend fun allList(): List<UserEntity>
 
-    @Query("SELECT * FROM user ORDER BY id ASC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM userEntity ORDER BY id ASC LIMIT :limit OFFSET :offset")
     suspend fun allList(limit: Int, offset: Int): List<UserEntity>
 
-    @Query("SELECT * FROM user")
+    @Query("SELECT * FROM userEntity")
     fun pagingSource(): PagingSource<Int, UserEntity>
 
-    @Query("SELECT * FROM user WHERE name = :name")
+    @Query("SELECT * FROM userEntity WHERE name = :name")
     fun searchUsersName(name: String): List<UserEntity>
 
-    @Query("SELECT * FROM user WHERE id = :id")
+    @Query("SELECT * FROM userEntity WHERE id = :id")
     fun searchUsersId(id: String): List<UserEntity>
 }
 
@@ -103,25 +103,25 @@ interface PushDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(pushEntity: PushEntity)
 
-    @Query("DELETE FROM push")
+    @Query("DELETE FROM pushEntity")
     suspend fun deleteAllList()
 
-    @Query("SELECT COUNT(*) FROM push")
+    @Query("SELECT COUNT(*) FROM pushEntity")
     suspend fun getItemCount(): Int
 
-    @Query("SELECT * FROM push ORDER BY uuid ASC")
+    @Query("SELECT * FROM pushEntity ORDER BY uuid ASC")
     suspend fun allList(): List<PushEntity>
 
-    @Query("SELECT * FROM push ORDER BY uuid ASC LIMIT :limit OFFSET :offset")
+    @Query("SELECT * FROM pushEntity ORDER BY uuid ASC LIMIT :limit OFFSET :offset")
     suspend fun allList(limit: Int, offset: Int): List<PushEntity>
 
-    @Query("SELECT * FROM push")
+    @Query("SELECT * FROM pushEntity")
     fun pagingSource(): PagingSource<Int, PushEntity>
 
-    @Query("SELECT * FROM push WHERE name MATCH :name||'*'")
+    @Query("SELECT * FROM pushEntity WHERE name MATCH :name||'*'")
     fun searchPush(name: String): List<PushEntity>
 
-    @Query("SELECT * FROM push WHERE name MATCH :name")
+    @Query("SELECT * FROM pushEntity WHERE name MATCH :name")
     fun getMatchPush(name: String): List<PushEntity>
 }
 

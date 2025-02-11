@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "e22cc1a3dd8f0f506b7a4efc57767d31",
+    "identityHash": "36c854333c349184296f7cd01984bc68",
     "entities": [
       {
         "tableName": "example_table",
@@ -37,7 +37,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "user",
+        "tableName": "userEntity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `age` INTEGER NOT NULL, `gender` INTEGER NOT NULL)",
         "fields": [
           {
@@ -73,13 +73,13 @@
         },
         "indices": [
           {
-            "name": "index_user_id",
+            "name": "index_userEntity_id",
             "unique": false,
             "columnNames": [
               "id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_userEntity_id` ON `${TABLE_NAME}` (`id`)"
           }
         ],
         "foreignKeys": []
@@ -97,7 +97,7 @@
           "preferredOrder": "ASC"
         },
         "contentSyncTriggers": [],
-        "tableName": "push",
+        "tableName": "pushEntity",
         "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`uuid` INTEGER NOT NULL, `name` TEXT NOT NULL, `age` INTEGER NOT NULL, `gender` INTEGER NOT NULL)",
         "fields": [
           {
@@ -136,7 +136,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e22cc1a3dd8f0f506b7a4efc57767d31')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '36c854333c349184296f7cd01984bc68')"
     ]
   }
 }
