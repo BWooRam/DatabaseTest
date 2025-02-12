@@ -68,10 +68,10 @@ interface ExampleDao {
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user1Entity: UserEntity)
+    suspend fun insert(user1Entity: UserEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(users: List<UserEntity>)
+    suspend fun insertAll(users: List<UserEntity>)
 
     @Query("DELETE FROM userEntity")
     suspend fun deleteAllList()

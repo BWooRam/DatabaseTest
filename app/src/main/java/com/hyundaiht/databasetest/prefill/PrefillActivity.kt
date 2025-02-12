@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.room.PrimaryKey
 import androidx.room.Room
+import androidx.room.withTransaction
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.hyundaiht.databasetest.TitleAndButton
@@ -85,7 +86,7 @@ class PrefillActivity : ComponentActivity() {
                                     Log.d(tag, "runInTransaction beforeMaxCount = $beforeMaxCount")
 
                                     kotlin.runCatching {
-                                        db.runInTransaction {
+                                        db.withTransaction {
                                             db.userDao().insert(createRandomUser())
                                             db.userDao().insert(createRandomUser())
                                             db.userDao().insert(createRandomUser())

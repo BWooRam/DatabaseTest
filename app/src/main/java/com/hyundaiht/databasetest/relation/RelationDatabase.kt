@@ -156,31 +156,31 @@ data class GroupWithUsers(
 @Dao
 interface UserRelationDao {
     @Insert
-    fun insertUser(user: User): Long
+    suspend fun insertUser(user: User): Long
 
     @Insert
-    fun insertPush(push: Push)
+    suspend fun insertPush(push: Push)
 
     @Insert
-    fun insertReservation(reservation: Reservation)
+    suspend fun insertReservation(reservation: Reservation)
 
     @Insert
-    fun insertGroup(group: Group): Long
+    suspend fun insertGroup(group: Group): Long
 
     @Insert
-    fun insertUserGroupCrossRef(crossRef: UserGroupCrossRef)
+    suspend fun insertUserGroupCrossRef(crossRef: UserGroupCrossRef)
 
     @Transaction
     @Query("SELECT * FROM user WHERE userId = :userId")
-    fun getUserWithInfo(userId: Long): UserWithInfo
+    suspend fun getUserWithInfo(userId: Long): UserWithInfo
 
     @Transaction
     @Query("SELECT * FROM user WHERE userId = :userId")
-    fun getUserWithGroups(userId: Long): UserWithGroups
+    suspend fun getUserWithGroups(userId: Long): UserWithGroups
 
     @Transaction
     @Query("SELECT * FROM `group` WHERE groupId = :groupId")
-    fun getGroupWithUsers(groupId: Long): GroupWithUsers
+    suspend fun getGroupWithUsers(groupId: Long): GroupWithUsers
 }
 
 @Database(
