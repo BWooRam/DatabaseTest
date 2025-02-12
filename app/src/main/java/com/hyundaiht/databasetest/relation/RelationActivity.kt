@@ -52,11 +52,17 @@ class RelationActivity : ComponentActivity() {
                                 CoroutineScope(Dispatchers.Default).launch {
                                     db.userRelationDao().insertUser(user)
                                     db.userRelationDao().insertGroup(group)
-                                    db.userRelationDao().insertReservation(createRandomReservation(user.userId))
-                                    db.userRelationDao().insertUserGroupCrossRef(UserGroupCrossRef(userId = user.userId, groupId = group.groupId))
+                                    db.userRelationDao()
+                                        .insertReservation(createRandomReservation(user.userId))
+                                    db.userRelationDao().insertUserGroupCrossRef(
+                                        UserGroupCrossRef(
+                                            userId = user.userId,
+                                            groupId = group.groupId
+                                        )
+                                    )
 
                                     //Push 5개 추가
-                                    for(index in 0 until 5){
+                                    for (index in 0 until 5) {
                                         db.userRelationDao()
                                             .insertPush(createRandomPushList(user.userId))
                                     }
@@ -75,7 +81,7 @@ class RelationActivity : ComponentActivity() {
                             clickEvent = {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     val list = db.userRelationDao().getUserWithInfo(user.userId)
-                                    Log.d(tag, "getAllList list = $list")
+                                    Log.d(tag, "getUserWithInfo list = $list")
                                 }
                             }
                         )
@@ -90,8 +96,9 @@ class RelationActivity : ComponentActivity() {
                                 .wrapContentSize(),
                             clickEvent = {
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    val list = db.userRelationDao().getUserWithGroups(userId = user.userId)
-                                    Log.d(tag, "getAllList list = $list")
+                                    val list =
+                                        db.userRelationDao().getUserWithGroups(userId = user.userId)
+                                    Log.d(tag, "getUserWithGroups list = $list")
                                 }
                             }
                         )
@@ -106,8 +113,9 @@ class RelationActivity : ComponentActivity() {
                                 .wrapContentSize(),
                             clickEvent = {
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    val list = db.userRelationDao().getGroupWithUsers(groupId = group.groupId)
-                                    Log.d(tag, "getAllList list = $list")
+                                    val list = db.userRelationDao()
+                                        .getGroupWithUsers(groupId = group.groupId)
+                                    Log.d(tag, "getGroupWithUsers list = $list")
                                 }
                             }
                         )
