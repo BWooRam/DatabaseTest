@@ -3,6 +3,7 @@ package com.hyundaiht.databasetest.prefill
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import androidx.room.withTransaction
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
@@ -70,7 +71,7 @@ class PrefillDBWorker(
 
         //Room을 초기화
         val roomDb = MyDatabase.getInstance(context)
-        roomDb.runInTransaction {
+        roomDb.withTransaction {
             roomDb.userDao().insertAll(userList)
         }
 
