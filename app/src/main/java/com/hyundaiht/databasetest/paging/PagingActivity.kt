@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.hyundaiht.databasetest.createRandomUser
 import com.hyundaiht.databasetest.ui.MyDatabase
@@ -67,8 +66,11 @@ class PagingActivity : ComponentActivity() {
                                 .wrapContentSize(),
                             clickEvent = {
                                 CoroutineScope(Dispatchers.Default).launch {
-                                    for (index in 0 until 1000)
-                                        db.userDao().insert(createRandomUser())
+                                    val temp = mutableListOf<UserEntity>()
+                                    for (index in 0 until 1000) {
+                                        temp.add(createRandomUser())
+                                    }
+                                    db.userDao().insertAll(temp)
                                 }
                             }
                         )
@@ -83,15 +85,15 @@ class PagingActivity : ComponentActivity() {
                                 .wrapContentSize(),
                             clickEvent = {
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    executeSearchUserName("5013731")
-                                    executeSearchUserName("5014199")
-                                    executeSearchUserName("8840711")
-                                    executeSearchUserName("8840902")
+                                    executeSearchUserName("9994278")
+                                    executeSearchUserName("6034207")
+                                    executeSearchUserName("6034207")
+                                    executeSearchUserName("1969323")
 
-                                    executeSearchUserId("5013731")
-                                    executeSearchUserId("5014199")
-                                    executeSearchUserId("8840711")
-                                    executeSearchUserId("8840902")
+                                    executeSearchUserId("9994278")
+                                    executeSearchUserId("6034207")
+                                    executeSearchUserId("6034207")
+                                    executeSearchUserId("1969323")
                                 }
                             }
                         )

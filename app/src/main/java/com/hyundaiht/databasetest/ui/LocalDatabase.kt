@@ -68,10 +68,10 @@ interface ExampleDao {
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user1Entity: UserEntity)
+    fun insert(user1Entity: UserEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(users: List<UserEntity>)
+    fun insertAll(users: List<UserEntity>)
 
     @Query("DELETE FROM userEntity")
     suspend fun deleteAllList()
@@ -103,6 +103,9 @@ interface PushDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(pushEntity: PushEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pushList: List<PushEntity>)
+
     @Query("DELETE FROM pushEntity")
     suspend fun deleteAllList()
 
@@ -118,11 +121,14 @@ interface PushDao {
     @Query("SELECT * FROM pushEntity")
     fun pagingSource(): PagingSource<Int, PushEntity>
 
-    @Query("SELECT * FROM pushEntity WHERE name MATCH :name||'*'")
+    @Query("SELECT * FROM pushEntity WHERE name = :name")
     fun searchPush(name: String): List<PushEntity>
 
+    @Query("SELECT * FROM pushEntity WHERE name MATCH :name||'*'")
+    fun searchLikePush(name: String): List<PushEntity>
+
     @Query("SELECT * FROM pushEntity WHERE name MATCH :name")
-    fun getMatchPush(name: String): List<PushEntity>
+    fun searchMatchPush(name: String): List<PushEntity>
 }
 
 /**
