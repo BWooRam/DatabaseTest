@@ -3,6 +3,7 @@ package com.hyundaiht.databasetest.relation
 import android.content.Context
 import androidx.room.Dao
 import androidx.room.Database
+import androidx.room.DatabaseView
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -153,6 +154,21 @@ data class GroupWithUsers(
     val users: List<User>
 )
 
+@DatabaseView(
+   "SELECT u.userId, u.name, " +
+           "g.groupName AS userGroup, " +
+           "(SELECT p.message FROM Push p WHERE p.userOwnerId = u.userId ORDER BY p.timestamp DESC LIMIT 1) AS lastPushMessage " +
+           "FROM User u " +
+           "LEFT JOIN user_group_cross_ref ug ON u.userId = ug.userId " +
+           "LEFT JOIN `Group` g ON ug.groupId = g.groupId"
+)
+data class UserGroupPushView(
+    val userId: Int,
+    val name: String,
+    val userGroup: String?,
+    val lastPushMessage: String?
+)
+
 @Dao
 interface UserRelationDao {
     @Insert
@@ -181,6 +197,9 @@ interface UserRelationDao {
     @Transaction
     @Query("SELECT * FROM `group` WHERE groupId = :groupId")
     suspend fun getGroupWithUsers(groupId: Long): GroupWithUsers
+
+    @Query("SELECT * FROM UserGroupPushView")
+    fun getUserGroupPushInfo(): List<UserGroupPushView>
 }
 
 @Database(
@@ -191,6 +210,7 @@ interface UserRelationDao {
         Group::class,
         UserGroupCrossRef::class
     ],
+    views = [UserGroupPushView::class],
     version = 1
 )
 abstract class RelationDatabase : RoomDatabase() {

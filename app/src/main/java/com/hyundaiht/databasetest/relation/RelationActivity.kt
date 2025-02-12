@@ -119,6 +119,22 @@ class RelationActivity : ComponentActivity() {
                                 }
                             }
                         )
+
+                        TitleAndButton(
+                            title = "DB getUserGroupPushInfo 테스트",
+                            titleModifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(),
+                            buttonName = "실행",
+                            buttonModifier = Modifier
+                                .wrapContentSize(),
+                            clickEvent = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val list = db.userRelationDao().getUserGroupPushInfo()
+                                    Log.d(tag, "getUserGroupPushInfo list = $list")
+                                }
+                            }
+                        )
                     }
                 }
             }
