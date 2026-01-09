@@ -25,6 +25,17 @@
         </activity>
 
         <activity
+            android:name=".json.JsonActivity"
+            android:exported="true"
+            android:theme="@style/Theme.DataBaseTest">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".paging.PagingActivity"
             android:exported="true"
             android:theme="@style/Theme.DataBaseTest">
@@ -61,11 +72,11 @@
             android:name=".relation.RelationActivity"
             android:exported="true"
             android:theme="@style/Theme.DataBaseTest">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
     </application>
 

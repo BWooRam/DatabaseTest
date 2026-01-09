@@ -53,6 +53,37 @@ data class PushEntity(
     @ColumnInfo(name = "gender") val gender: Boolean
 )
 
+@Entity
+data class JsonTextEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val payload: String
+)
+
+
+@Dao
+interface JsonTextDao {
+
+    @Query("""
+        INSERT INTO JsonTextEntity(payload)
+        VALUES (json(:rawJson))
+    """)
+    suspend fun insertCanonical(rawJson: String)
+
+    @Query("""
+    SELECT payload
+    FROM JsonTextEntity
+    WHERE id = :id
+""")
+    suspend fun selectPayload(id: Long): String
+
+    @Query("""
+    SELECT json_extract(payload, '$.b.x')
+    FROM JsonTextEntity
+    WHERE id = :id
+""")
+    suspend fun extractBX(id: Long): Int?
+}
+
 @Dao
 interface ExampleDao {
     @Query("DELETE FROM example_table WHERE :currentTime - createdAt > :expiryTime")
@@ -140,13 +171,15 @@ interface PushDao {
         ExampleEntity::class,
         UserEntity::class,
         PushEntity::class,
+        JsonTextEntity::class
     ],
-    version = 4
+    version = 5
 )
 abstract class MyDatabase : RoomDatabase() {
     abstract fun exampleDao(): ExampleDao
     abstract fun userDao(): UserDao
     abstract fun pushDao(): PushDao
+    abstract fun jsonTextDao(): JsonTextDao
 
     companion object {
         fun getInstance(context: Context): MyDatabase {
